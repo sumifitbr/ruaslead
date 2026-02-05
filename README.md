@@ -1,5 +1,7 @@
 # QR MVP (Flask)
 
+![Ruas Lead](./ruaslead.png)
+
 ## Rodar local
 
 1) Criar venv
