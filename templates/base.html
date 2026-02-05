@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Editar {{ qr.code }} | QR Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <div>
+    <h1 class="h3 mb-1">Editar QR</h1>
+    <div class="text-muted">
+      Código: <span class="badge text-bg-dark code-pill">{{ qr.code }}</span>
+    </div>
+  </div>
+  <div>
+    <a class="btn btn-outline-secondary" href="{{ url_for('main.dashboard') }}">
+      <i class="bi bi-arrow-left me-2"></i>Voltar
+    </a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-7">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <form method="post">
+          <div class="mb-3">
+            <label class="form-label">Descrição</label>
+            <input class="form-control" name="description" value="{{ qr.description or '' }}" placeholder="Ex: Casa Rua X - 2 dorm">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">URL destino</label>
+            <input class="form-control" name="current_url" value="{{ qr.current_url or '' }}" placeholder="https://...">
+            <div class="form-text">Use <span class="code-pill">http://</span> ou <span class="code-pill">https://</span>.</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status">
+              <option value="active" {% if qr.status == 'active' %}selected{% endif %}>Ativo</option>
+              <option value="inactive" {% if qr.status == 'inactive' %}selected{% endif %}>Inativo</option>
+            </select>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-save me-2"></i>Salvar
+            </button>
+            <a class="btn btn-outline-dark" href="{{ url_for('main.qr_png', code=qr.code) }}">
+              <i class="bi bi-download me-2"></i>Baixar PNG
+            </a>
+            <a class="btn btn-outline-success" href="{{ url_for('main.redirect_qr', code=qr.code) }}" target="_blank">
+              <i class="bi bi-box-arrow-up-right me-2"></i>Testar
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fw-semibold mb-2">Como funciona</div>
+        <div class="text-muted">
+          O QR impresso aponta para o endpoint público <span class="code-pill">/r/{{ qr.code }}</span>.
+          Ao escanear, o sistema registra o acesso e faz um redirect (302) para a URL configurada.
+        </div>
+        <hr>
+        <div class="small text-muted">
+          <div><i class="bi bi-clock me-2"></i>Criado em: {{ qr.created_at }}</div>
+          <div class="mt-1"><i class="bi bi-arrow-repeat me-2"></i>Atualizado em: {{ qr.updated_at }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

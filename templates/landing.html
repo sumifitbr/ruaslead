@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RuaLead — Placas que viram leads mensuráveis</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    :root{
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-hover: #f8fafc;
+      --text: #0f172a;
+      --text-dim: #64748b;
+      --accent: #60a5fa;
+      --accent-bright: #3b82f6;
+      --border: rgba(15, 23, 42, 0.1);
+      --glow: rgba(96, 165, 250, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(96, 165, 250, 0.08), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.06), transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.04), transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+    }
+
+    .content { position: relative; z-index: 1; }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 20px var(--glow);
+      color: white;
+    }
+
+    .nav-link {
+      color: var(--text-dim);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      transition: color 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .nav-link:hover { color: var(--text); }
+
+    .btn {
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      color: white;
+      box-shadow: 0 4px 20px var(--glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--glow);
+      color: white;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .hero { padding: 140px 0 100px; text-align: center; }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(180deg, #0f172a 0%, #64748b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-dim);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 100px;
+      color: var(--accent-bright);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    .demo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .qr-display {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+      background: rgba(96, 165, 250, 0.03);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .qr-code {
+      width: 140px;
+      height: 140px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .qr-code i { font-size: 80px; color: var(--accent); }
+
+    .metrics { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .metric-badge {
+      padding: 6px 12px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-bright);
+      font-weight: 600;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-bright);
+      font-size: 0.875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    .features, .steps, .pilot-section, .faq-section, .contact-section { padding: 100px 0; }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(96, 165, 250, 0.3);
+      background: var(--surface-hover);
+      box-shadow: 0 12px 40px rgba(96, 165, 250, 0.15);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: var(--accent-bright);
+      margin-bottom: 1.5rem;
+    }
+
+    .steps { background: var(--surface-hover); }
+
+    .step-card {
+      display: flex;
+      gap: 2rem;
+      align-items: start;
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .step-card:hover { border-color: rgba(96, 165, 250, 0.3); background: var(--surface-hover); }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px var(--glow);
+      color: white;
+    }
+
+    .pilot-card, .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .pilot-card::before, .contact-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(96, 165, 250, 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-container { max-width: 600px; margin: 2rem auto 0; text-align: left; position: relative; z-index: 1; }
+
+    .form-control, .form-select {
+      background: rgba(96, 165, 250, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--text);
+      margin-bottom: 1rem;
+      transition: all 0.3s;
+    }
+
+    .form-control:focus, .form-select:focus {
+      background: rgba(96, 165, 250, 0.05);
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+      color: var(--text);
+    }
+
+    .form-label { color: var(--text); font-weight: 600; font-size: 0.875rem; margin-bottom: 0.5rem; display: block; }
+
+    .faq-section { background: var(--surface-hover); }
+
+    .accordion-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .accordion-button {
+      background: transparent;
+      color: var(--text);
+      border: none;
+      padding: 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .accordion-button:not(.collapsed) {
+      background: rgba(96, 165, 250, 0.05);
+      color: var(--accent-bright);
+    }
+
+    .accordion-body { padding: 0 1.5rem 1.5rem; color: var(--text-dim); }
+
+    footer {
+      padding: 3rem 0 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding: 100px 0 60px; }
+      .qr-display { flex-direction: column; text-align: center; }
+      .step-card { flex-direction: column; }
+      .pilot-card, .contact-card { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <!-- NAV ajustada para o padrão do anexo -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <div class="logo-icon"><i class="bi bi-qr-code"></i></div>
+          <span>RuaLead</span>
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#como">Como funciona</a></li>
+            <li class="nav-item"><a class="nav-link" href="#diferenciais">Diferenciais</a></li>
+            <li class="nav-item"><a class="nav-link" href="#piloto">Piloto</a></li>
+            <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+          </ul>
+          <div class="ms-3 d-none d-lg-block">
+            <a class="btn btn-primary" href="#contato">Quero um piloto</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="badge-pill">
+          <i class="bi bi-lightning-charge-fill"></i>
+          <span>Canal offline → digital mensurável</span>
+        </div>
+
+        <h1>
+          Transforme a placa na rua<br/>
+          em um <span class="gradient-text">canal mensurável</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          RuaLead transforma QR codes em canais inteligentes com métricas reais
+          e integração total — sem trocar seu sistema atual.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#contato" class="btn btn-primary">
+            <i class="bi bi-rocket-takeoff me-2"></i>
+            Quero um piloto de 30 dias
+          </a>
+          <a href="#como" class="btn btn-outline">
+            <i class="bi bi-play-circle me-2"></i>
+            Ver como funciona
+          </a>
+        </div>
+
+        <div class="demo-card">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <div class="text-muted small">Exemplo real</div>
+              <h3 class="h5 mb-0">Placa → Página do imóvel</h3>
+            </div>
+            <span class="badge-pill" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: #10b981;">
+              <i class="bi bi-broadcast"></i> Ao vivo
+            </span>
+          </div>
+
+          <div class="qr-display">
+            <div class="qr-code"><i class="bi bi-qr-code"></i></div>
+
+            <div class="flex-grow-1">
+              <div class="mb-3">
+                <div class="text-muted small mb-1">Destino dinâmico</div>
+                <div class="fw-semibold">Fotos • Valor • WhatsApp direto</div>
+              </div>
+
+              <div class="mb-3">
+                <div class="text-muted small mb-2">Métricas em tempo real</div>
+                <div class="metrics">
+                  <div class="metric-badge">📊 8 scans hoje</div>
+                  <div class="metric-badge">📈 42 esta semana</div>
+                  <div class="metric-badge">🎯 171 este mês</div>
+                </div>
+              </div>
+
+              <p class="text-muted small mb-0">
+                Descubra quais imóveis geram interesse real na rua e ajuste destinos em tempo real.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO (mantido no mesmo estilo, só garantindo id = como) -->
+    <section id="como" class="steps">
+      <div class="container">
+        <div class="text-center">
+          <div class="section-label">
+            <i class="bi bi-diagram-3"></i>
+            <span>Como funciona</span>
+          </div>
+          <h2 class="section-title">
+            Simples como <span class="gradient-text">1-2-3-4</span>
+          </h2>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <div>
+                <h3 class="h5 mb-2">Cole o QR na placa</h3>
+                <p class="text-muted mb-0">Adesivo resistente à chuva. Aplique em segundos em qualquer placa de "Vende-se" ou material de divulgação.</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <div>
+                <h3 class="h5 mb-2">Cliente escaneia</h3>
+                <p class="text-muted mb-0">Qualquer celular, sem app. Câmera nativa do iPhone ou Android reconhece automaticamente.</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <div>
+                <h3 class="h5 mb-2">Abre seu destino</h3>
+                <p class="text-muted mb-0">Site, WhatsApp, landing page, Airbnb, portais... Você escolhe e pode mudar a qualquer momento.</p>
+              </div>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <div>
+                <h3 class="h5 mb-2">Acompanhe no painel</h3>
+                <p class="text-muted mb-0">Dashboard com métricas em tempo real: scans, horários, comparativo entre imóveis e regiões.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIAIS (antes era features; agora id = diferenciais como no anexo) -->
+    <section id="diferenciais" class="features">
+      <div class="container">
+        <div class="text-center">
+          <div class="section-label">
+            <i class="bi bi-stars"></i>
+            <span>Diferenciais</span>
+          </div>
+          <h2 class="section-title">
+            Não é só um QR code.<br/>
+            É um <span class="gradient-text">canal inteligente</span>.
+          </h2>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-arrow-repeat"></i></div>
+            <h3>QR dinâmico</h3>
+            <p>Mude o destino quando quiser sem reimprimir. Perfeito para imóveis com alta rotatividade.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+            <h3>Métricas reais</h3>
+            <p>Veja scans por dia, semana e mês. Identifique horários e regiões com maior interesse.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-plug"></i></div>
+            <h3>Integração zero atrito</h3>
+            <p>Funciona com seu site, CRM, WhatsApp e portais. Não precisa trocar nada do que já usa.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+            <h3>Canal proprietário</h3>
+            <p>Leads direto da rua, sem competir com outros anúncios em portais pagos.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
+            <h3>Deploy instantâneo</h3>
+            <p>Comece em minutos. Imprima, cole na placa e pronto. Sem instalações complexas.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon"><i class="bi bi-bullseye"></i></div>
+            <h3>Decisões data-driven</h3>
+            <p>Pare de adivinhar. Saiba exatamente quais imóveis e regiões geram mais interesse.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PILOTO (equivalente ao #piloto do anexo) -->
+    <section id="piloto" class="pilot-section">
+      <div class="container">
+        <div class="pilot-card text-center">
+          <div class="badge-pill">
+            <i class="bi bi-rocket-takeoff"></i>
+            <span>Piloto de 30 dias</span>
+          </div>
+
+          <h2 class="section-title mb-3">
+            Pronto para medir o que<br/>
+            acontece na <span class="gradient-text">rua</span>?
+          </h2>
+
+          <p class="text-muted mb-4" style="max-width: 520px; margin: 0 auto;">
+            Comece com 20 QRs dinâmicos, painel completo e suporte.
+            Sem compromisso, cancele quando quiser.
+          </p>
+
+          <a href="#contato" class="btn btn-primary" style="padding: 16px 28px;">
+            <i class="bi bi-whatsapp me-2"></i>
+            Solicitar piloto
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (com o f1 corrigido dentro do accordion) -->
+    <section id="faq" class="faq-section">
+      <div class="container">
+        <div class="text-center mb-5">
+          <div class="section-label">
+            <i class="bi bi-question-circle"></i>
+            <span>Perguntas frequentes</span>
+          </div>
+          <h2 class="section-title">Dúvidas? Respondemos aqui.</h2>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="accordion" id="faqAcc">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f1">
+                    O QR fica para sempre com a mesma URL?
+                  </button>
+                </h2>
+                <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                  <div class="accordion-body">
+                    Sim! O QR aponta para um link fixo (ex: rualead.com/r/QR-001). O destino final pode ser alterado quantas vezes quiser no painel.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">
+                    Precisa trocar meu sistema atual?
+                  </button>
+                </h2>
+                <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                  <div class="accordion-body">
+                    Não! Você aponta o QR para seu site, CRM, portal, WhatsApp ou qualquer link que já use hoje. RuaLead funciona como camada de inteligência.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">
+                    Vocês identificam quem escaneou?
+                  </button>
+                </h2>
+                <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                  <div class="accordion-body">
+                    Não. Registramos apenas dados técnicos (data/hora, IP, user-agent) para métricas. Telefone/nome só se o cliente decidir contatar via WhatsApp ou formulário.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">
+                    Funciona para temporada (Airbnb/Booking)?
+                  </button>
+                </h2>
+                <div id="f4" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                  <div class="accordion-body">
+                    Sim! O destino pode ser Airbnb, Booking, galeria de fotos ou página própria do imóvel. Totalmente flexível.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">
+                    Quanto custa?
+                  </button>
+                </h2>
+                <div id="f5" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+                  <div class="accordion-body">
+                    O piloto de 30 dias inclui 20 QRs + painel completo. Entre em contato para receber a proposta personalizada.
+                  </div>
+                </div>
+              </div>
+            </div><!-- /accordion -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO (no anexo o form fica aqui: #contato) -->
+    <section id="contato" class="contact-section">
+      <div class="container">
+        <div class="contact-card">
+          <div class="text-center">
+            <div class="badge-pill">
+              <i class="bi bi-chat-dots"></i>
+              <span>Vamos conversar</span>
+            </div>
+
+            <h2 class="section-title mb-3">
+              Solicitar piloto e<br/>
+              receber a <span class="gradient-text">proposta</span>
+            </h2>
+
+            <p class="text-muted mb-0" style="max-width: 520px; margin: 0 auto;">
+              Preencha e abriremos o WhatsApp com mensagem pronta. Você confirma antes de enviar.
+            </p>
+          </div>
+
+          <div class="form-container">
+            <form id="leadForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nome</label>
+                  <input type="text" class="form-control" id="nome" placeholder="Seu nome" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Imobiliária</label>
+                  <input type="text" class="form-control" id="empresa" placeholder="Nome da empresa" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Cidade/UF</label>
+                  <input type="text" class="form-control" id="cidade" placeholder="Ex: São Paulo/SP" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">WhatsApp</label>
+                  <input type="tel" class="form-control" id="whats" placeholder="(11) 9xxxx-xxxx" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Quantidade de placas</label>
+                  <select class="form-select" id="placas" required>
+                    <option value="" selected disabled>Selecione...</option>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>50+</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Observações (opcional)</label>
+                  <textarea class="form-control" id="obs" rows="3" placeholder="Conte mais sobre seu caso de uso..."></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 mt-4" style="padding: 16px;">
+                <i class="bi bi-whatsapp me-2"></i>
+                Enviar no WhatsApp
+              </button>
+
+              <p class="text-muted small mt-3 mb-0 text-center">
+                Abriremos o WhatsApp com mensagem pronta. Você confirma antes de enviar.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div>© <span id="year"></span> RuaLead. Todos os direitos reservados.</div>
+          <div class="d-flex gap-4">
+            <a href="#como" class="text-decoration-none" style="color: var(--text-dim);">Como funciona</a>
+            <a href="#diferenciais" class="text-decoration-none" style="color: var(--text-dim);">Diferenciais</a>
+            <a href="#faq" class="text-decoration-none" style="color: var(--text-dim);">FAQ</a>
+            <a href="#contato" class="text-decoration-none" style="color: var(--text-dim);">Contato</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Year (igual anexo)
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // WhatsApp comercial (DDI+DDD+número, sem + e sem espaços)
+    const RUALEAD_WA_NUMBER = "5511999999999"; // <-- ALTERE AQUI
+
+    // Google Forms (sem backend)
+    const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDUMenT9j-C4gRZdu1Ct1NYHHDDL1kKntz0PiuKV-EYaCGSg/formResponse";
+    const GF = {
+      nome: "entry.6446805",
+      empresa: "entry.1181733162",
+      cidade: "entry.411987689",
+      whats: "entry.1725602620",
+      placas: "entry.1456561747",
+      obs: "entry.1183393845"
+    };
+
+    document.getElementById("leadForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const empresa = document.getElementById("empresa").value.trim();
+      const cidade = document.getElementById("cidade").value.trim();
+      const whats = document.getElementById("whats").value.trim();
+      const placas = document.getElementById("placas").value;
+      const obs = document.getElementById("obs").value.trim();
+
+      // 1) salvar no Google Forms
+      try {
+        const fd = new FormData();
+        fd.append(GF.nome, nome);
+        fd.append(GF.empresa, empresa);
+        fd.append(GF.cidade, cidade);
+        fd.append(GF.whats, whats);
+        fd.append(GF.placas, placas);
+        fd.append(GF.obs, obs || "-");
+
+        await fetch(GOOGLE_FORM_ACTION_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: fd
+        });
+      } catch (err) {
+        console.warn("Erro ao enviar para Google Forms:", err);
+      }
+
+      // 2) abrir WhatsApp
+      const msg = `Olá! Quero rodar um piloto do RuaLead.
+
+Nome: ${nome}
+Imobiliária: ${empresa}
+Cidade/UF: ${cidade}
+Meu WhatsApp: ${whats}
+Qtde de placas: ${placas}
+Obs: ${obs || "-"}
+
+Pode me explicar como funciona e enviar a proposta do piloto de 30 dias?`;
+
+      const wa = (RUALEAD_WA_NUMBER || "").replace(/\D/g, "");
+      const url = `https://wa.me/${wa}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+    });
+  </script>
+</body>
+</html>

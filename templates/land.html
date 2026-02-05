@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RuaLead — Placas que viram leads mensuráveis</title>
+  <meta name="description" content="RuaLead transforma placas físicas em canais digitais mensuráveis com QR dinâmico e métricas reais — sem trocar seu sistema." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="RuaLead — Placas que viram leads mensuráveis" />
+  <meta property="og:description" content="Transforme placas de Vende-se em leads mensuráveis. QR dinâmico + métricas reais + integração fácil." />
+  <meta property="og:type" content="website" />
+
+  <!-- Bootstrap + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --rl-bg: #f6f7fb;
+      --rl-card: #ffffff;
+      --rl-text: #0f172a;
+      --rl-muted: #64748b;
+    }
+    body{
+      color: var(--rl-text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(13,110,253,.10), transparent 60%),
+        radial-gradient(1000px 700px at 90% 20%, rgba(25,135,84,.08), transparent 55%),
+        var(--rl-bg);
+    }
+    .navbar{
+      backdrop-filter: blur(10px);
+      background: rgba(246,247,251,.65);
+    }
+    .brand-dot{
+      display:inline-block;width:10px;height:10px;border-radius:999px;
+      background: #0d6efd; margin-right:10px;
+      box-shadow: 0 0 0 6px rgba(13,110,253,.12);
+    }
+    .hero{
+      padding: 84px 0 48px;
+    }
+    .card{
+      border: 0;
+      border-radius: 18px;
+      background: var(--rl-card);
+      box-shadow: 0 10px 30px rgba(2,6,23,.06);
+    }
+    .pill{
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(13,110,253,.10);
+      color: #0d6efd;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .btn{
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+    .section{
+      padding: 56px 0;
+    }
+    .muted{ color: var(--rl-muted); }
+    .feature-icon{
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(15,23,42,.05);
+      font-size: 20px;
+    }
+    .divider{
+      height:1px; background: rgba(15,23,42,.08);
+      margin: 18px 0;
+    }
+    .small-note{
+      font-size: 12px;
+      color: var(--rl-muted);
+    }
+    .sticky-cta{
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 999;
+      display: none;
+    }
+    @media (max-width: 992px){
+      .hero{ padding-top: 72px; }
+      .sticky-cta{ display:block; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Nav -->
+  <nav class="navbar navbar-expand-lg border-bottom border-light-subtle fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-semibold d-flex align-items-center" href="#">
+        <span class="brand-dot"></span>RuaLead
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="#como">Como funciona</a></li>
+          <li class="nav-item"><a class="nav-link" href="#diferenciais">Diferenciais</a></li>
+          <li class="nav-item"><a class="nav-link" href="#piloto">Piloto</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        </ul>
+        <div class="ms-lg-3 mt-3 mt-lg-0 d-grid d-lg-block">
+          <a class="btn btn-primary" href="#contato">
+            <i class="bi bi-rocket-takeoff me-2"></i>Quero um piloto
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <div class="pill mb-3">
+            <i class="bi bi-qr-code-scan"></i>
+            Canal offline → digital mensurável
+          </div>
+
+          <h1 class="display-6 fw-bold lh-sm mb-3">
+            Transforme placas de “Vende-se” em <span class="text-primary">leads mensuráveis</span>.
+          </h1>
+
+          <p class="lead muted mb-4">
+            RuaLead conecta a placa física ao seu funil digital com QR dinâmico e métricas reais —
+            <b>sem trocar seu sistema</b>.
+          </p>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-lg" href="#contato">
+              <i class="bi bi-check2-circle me-2"></i>Quero um piloto de 30 dias
+            </a>
+            <a class="btn btn-outline-secondary btn-lg" href="#como">
+              <i class="bi bi-play-circle me-2"></i>Ver como funciona
+            </a>
+          </div>
+
+          <div class="row g-2 mt-4">
+            <div class="col-md-4">
+              <div class="d-flex gap-2 align-items-start">
+                <div class="feature-icon"><i class="bi bi-arrow-repeat"></i></div>
+                <div>
+                  <div class="fw-semibold">QR dinâmico</div>
+                  <div class="small-note">Troque o destino em 1 clique.</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex gap-2 align-items-start">
+                <div class="feature-icon"><i class="bi bi-bar-chart"></i></div>
+                <div>
+                  <div class="fw-semibold">Métricas reais</div>
+                  <div class="small-note">Scans por dia/semana/mês.</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="d-flex gap-2 align-items-start">
+                <div class="feature-icon"><i class="bi bi-plug"></i></div>
+                <div>
+                  <div class="fw-semibold">Sem atrito</div>
+                  <div class="small-note">Integra com site/WhatsApp/portais.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero card -->
+        <div class="col-lg-5">
+          <div class="card p-4">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div class="text-muted small">Exemplo</div>
+                <div class="fw-semibold">Placa → Página do imóvel</div>
+              </div>
+              <span class="badge text-bg-success">Ao vivo</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="d-flex gap-3">
+              <div class="text-center">
+                <div class="border rounded-4 p-3">
+                  <i class="bi bi-qr-code" style="font-size:54px;"></i>
+                </div>
+                <div class="small-note mt-2">QR dinâmico</div>
+              </div>
+
+              <div class="flex-grow-1">
+                <div class="small-note">Destino</div>
+                <div class="fw-semibold">Fotos • Valor • WhatsApp</div>
+                <div class="small-note mt-2">Métricas</div>
+                <div class="d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-light border">Scans hoje: 8</span>
+                  <span class="badge text-bg-light border">Semana: 42</span>
+                  <span class="badge text-bg-light border">Mês: 171</span>
+                </div>
+                <div class="small-note mt-3">
+                  Você descobre quais imóveis geram interesse real na rua — e ajusta o destino (site/WhatsApp/landing).
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <a class="btn btn-outline-primary w-100" href="#contato">
+              <i class="bi bi-calendar2-check me-2"></i>Agendar conversa rápida
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Problem -->
+  <section class="section pt-0">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h2 class="h3 fw-bold mb-2">O canal offline mais forte do mercado é cego.</h2>
+          <p class="muted mb-0">
+            Placas estão em toda cidade. Pessoas passam, param, olham — mas a imobiliária não mede nada e decide no achismo.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4">
+            <div class="fw-semibold mb-2">Perguntas que o RuaLead responde:</div>
+            <ul class="mb-0 muted">
+              <li>Quais imóveis chamam mais atenção na rua?</li>
+              <li>Quais regiões geram mais interesse real?</li>
+              <li>Em quais horários/dias as pessoas mais escaneiam?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="como" class="section">
+    <div class="container">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <i class="bi bi-diagram-3 text-primary"></i>
+        <div class="fw-semibold">Como funciona</div>
+      </div>
+      <h2 class="h3 fw-bold mb-4">Simples, rápido e sem fricção.</h2>
+
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-signpost-split"></i></div>
+            <div class="fw-semibold">1) Instale o QR</div>
+            <div class="muted small mt-1">Na placa (adesivo) ou no material de divulgação.</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-camera"></i></div>
+            <div class="fw-semibold">2) Cliente escaneia</div>
+            <div class="muted small mt-1">Sem app, direto na câmera do celular.</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-link-45deg"></i></div>
+            <div class="fw-semibold">3) Abre o destino</div>
+            <div class="muted small mt-1">Site, WhatsApp, landing, Airbnb, portais…</div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-graph-up"></i></div>
+            <div class="fw-semibold">4) Métricas no painel</div>
+            <div class="muted small mt-1">Scans por período e histórico de acessos.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Differentials -->
+  <section id="diferenciais" class="section">
+    <div class="container">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <i class="bi bi-stars text-primary"></i>
+        <div class="fw-semibold">Diferenciais</div>
+      </div>
+      <h2 class="h3 fw-bold mb-4">Não é “um QR qualquer”. É um canal inteligente.</h2>
+
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <div class="d-flex gap-3">
+              <div class="feature-icon"><i class="bi bi-arrow-repeat"></i></div>
+              <div>
+                <div class="fw-semibold">QR dinâmico (o imóvel muda, o QR continua)</div>
+                <div class="muted small mt-1">Troque o destino sem reimprimir. Ideal para rotatividade de imóveis e placas.</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="d-flex gap-3">
+              <div class="feature-icon"><i class="bi bi-bar-chart-line"></i></div>
+              <div>
+                <div class="fw-semibold">Métricas reais do offline</div>
+                <div class="muted small mt-1">Total de scans, gráficos por dia/semana/mês e horários de maior interesse.</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="d-flex gap-3">
+              <div class="feature-icon"><i class="bi bi-plug"></i></div>
+              <div>
+                <div class="fw-semibold">Integração sem atrito</div>
+                <div class="muted small mt-1">Funciona com seu site, CRM e portais — sem substituir o que você já usa.</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="d-flex gap-3">
+              <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+              <div>
+                <div class="fw-semibold">Canal proprietário</div>
+                <div class="muted small mt-1">O lead nasce direto da rua, sem competir com outros anúncios no portal.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <div class="fw-semibold mb-2">Para que serve na prática?</div>
+            <ul class="muted mb-3">
+              <li>Priorizar imóveis com maior interesse real</li>
+              <li>Validar regiões e pontos com mais scans</li>
+              <li>Ajustar o destino do QR (site → WhatsApp → landing)</li>
+              <li>Treinar times com base em dados, não “feeling”</li>
+            </ul>
+            <div class="small-note">
+              Observação: coletamos apenas dados técnicos (ex: IP e user-agent). Isso não identifica telefone/nome.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="section">
+    <div class="container">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <i class="bi bi-grid-1x2 text-primary"></i>
+        <div class="fw-semibold">Casos de uso</div>
+      </div>
+      <h2 class="h3 fw-bold mb-4">O mesmo QR, múltiplas estratégias.</h2>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-house-door"></i></div>
+            <div class="fw-semibold">Venda residencial</div>
+            <div class="muted small mt-1">Fotos, valor, mapa e WhatsApp em 1 clique.</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-water"></i></div>
+            <div class="fw-semibold">Temporada</div>
+            <div class="muted small mt-1">Link para Airbnb/Booking ou galeria própria do imóvel.</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100">
+            <div class="feature-icon mb-3"><i class="bi bi-buildings"></i></div>
+            <div class="fw-semibold">Lançamentos</div>
+            <div class="muted small mt-1">Landing com lista de espera e captação antecipada.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pilot -->
+  <section id="piloto" class="section">
+    <div class="container">
+      <div class="card p-4 p-lg-5">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <div class="pill mb-3">
+              <i class="bi bi-lightning-charge"></i>
+              Entrada rápida
+            </div>
+            <h2 class="h3 fw-bold mb-2">Comece com um piloto de 30 dias.</h2>
+            <p class="muted mb-4">
+              Implantação rápida, baixo custo e resultados mensuráveis.
+              A ideia é validar o interesse real que já existe na rua.
+            </p>
+
+            <div class="row g-2">
+              <div class="col-md-6">
+                <div class="d-flex gap-2 align-items-start">
+                  <i class="bi bi-check-circle text-success"></i>
+                  <div><b>20 QRs dinâmicos</b><div class="small-note">Troca de destino quando precisar.</div></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-2 align-items-start">
+                  <i class="bi bi-check-circle text-success"></i>
+                  <div><b>Painel + métricas</b><div class="small-note">Scans por período.</div></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-2 align-items-start">
+                  <i class="bi bi-check-circle text-success"></i>
+                  <div><b>Relatório semanal</b><div class="small-note">Ranking e insights.</div></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-2 align-items-start">
+                  <i class="bi bi-check-circle text-success"></i>
+                  <div><b>Suporte na implantação</b><div class="small-note">Rápido e prático.</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="card p-4">
+              <div class="fw-semibold mb-2">Pronto para testar?</div>
+              <div class="muted small mb-3">Preencha e enviamos a proposta do piloto.</div>
+              <a class="btn btn-primary w-100" href="#contato">
+                <i class="bi bi-rocket-takeoff me-2"></i>Solicitar piloto
+              </a>
+              <div class="small-note mt-3">
+                Dica: comece com 10–20 placas em imóveis com bom fluxo de rua.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="container">
+      <h2 class="h3 fw-bold mb-4">Perguntas frequentes</h2>
+
+      <div class="accordion" id="faqAcc">
+        <div class="accordion-item border-0 mb-2 card">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f1">
+              O QR fica para sempre com a mesma URL?
+            </button>
+          </h2>
+          <div id="f1" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body muted">
+              O QR aponta para um link fixo do RuaLead (ex: /r/QR-001). O destino por trás pode ser alterado a qualquer momento.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item border-0 mb-2 card">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">
+              Precisa trocar meu sistema atual?
+            </button>
+          </h2>
+          <div id="f2" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body muted">
+              Não. Você pode apontar o QR para o seu site, CRM, portal, WhatsApp ou qualquer link que já use hoje.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item border-0 mb-2 card">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">
+              Vocês conseguem identificar o telefone de quem escaneou?
+            </button>
+          </h2>
+          <div id="f3" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body muted">
+              Não. Por padrão, registramos apenas dados técnicos (data/hora, IP e user-agent), úteis para métricas.
+              Telefone/nome só aparecem se o cliente decidir falar no WhatsApp ou preencher um formulário.
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item border-0 mb-2 card">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">
+              Dá para usar em temporada (Airbnb/Booking)?
+            </button>
+          </h2>
+          <div id="f4" class="accordion-collapse collapse" data-bs-parent="#faqAcc">
+            <div class="accordion-body muted">
+              Sim. O destino pode ser Airbnb, Booking, galeria de fotos ou página própria do imóvel.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contato" class="section">
+    <div class="container">
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <h2 class="h3 fw-bold mb-2">Vamos rodar um piloto?</h2>
+          <p class="muted mb-4">
+            Preencha os dados e você será direcionado para o WhatsApp com uma mensagem pronta.
+            Você também pode editar antes de enviar.
+          </p>
+
+          <div class="card p-4">
+            <div class="d-flex gap-2 align-items-start mb-2">
+              <i class="bi bi-clock text-primary"></i>
+              <div>
+                <div class="fw-semibold">Conversa rápida</div>
+                <div class="small-note">10–15 min para entender seu cenário e indicar o melhor piloto.</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 align-items-start">
+              <i class="bi bi-shield-check text-primary"></i>
+              <div>
+                <div class="fw-semibold">Sem compromisso</div>
+                <div class="small-note">O objetivo é validar dados reais antes de escalar.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card p-4">
+            <div class="fw-semibold mb-3">Solicitar piloto</div>
+
+            <form id="leadForm">
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <label class="form-label">Nome</label>
+                  <input class="form-control" id="nome" required placeholder="Seu nome">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Imobiliária</label>
+                  <input class="form-control" id="empresa" required placeholder="Nome da imobiliária">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Cidade/UF</label>
+                  <input class="form-control" id="cidade" required placeholder="Ex: Itanhaém/SP">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">WhatsApp</label>
+                  <input class="form-control" id="whats" required placeholder="(xx) 9xxxx-xxxx">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Quantidade aproximada de placas</label>
+                  <select class="form-select" id="placas" required>
+                    <option value="" selected disabled>Selecione…</option>
+                    <option>10</option>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>50+</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Observações (opcional)</label>
+                  <textarea class="form-control" id="obs" rows="3" placeholder="Ex: Quero usar em temporada / Quero link para WhatsApp / Tenho site próprio…"></textarea>
+                </div>
+              </div>
+
+              <button class="btn btn-primary w-100 mt-3" type="submit">
+                <i class="bi bi-whatsapp me-2"></i>Enviar no WhatsApp
+              </button>
+
+              <div class="small-note mt-2">
+                Ao clicar, abriremos o WhatsApp com uma mensagem pronta. Você confirma o envio.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <footer class="pt-5 pb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 small-note">
+          <div>© <span id="year"></span> RuaLead</div>
+          <div class="d-flex gap-3">
+            <a class="text-decoration-none muted" href="#faq">FAQ</a>
+            <a class="text-decoration-none muted" href="#contato">Contato</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- Sticky CTA for mobile -->
+  <div class="sticky-cta">
+    <a class="btn btn-primary shadow" href="#contato">
+      <i class="bi bi-rocket-takeoff me-2"></i>Quero um piloto
+    </a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Set year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // WhatsApp redirect (STATIC)
+    // Troque abaixo pelo número comercial do RuaLead no formato DDI + DDD + número (sem +, sem espaços)
+    // Ex: Brasil: 55 + 11 + 912345678 => "5511912345678"
+    const RUALEAD_WA_NUMBER = "55XXXXXXXXXXX"; // <-- ALTERE AQUI
+
+    // Google Forms (OPÇÃO 1)
+    // 1) Troque FORM_ID e os entry.xxxxxx pelos do SEU formulário
+    const GOOGLE_FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeDUMenT9j-C4gRZdu1Ct1NYHHDDL1kKntz0PiuKV-EYaCGSg/formResponse";
+
+    // Troque os entrys abaixo pelos do seu form (você pega no link pré-preenchido)
+    const GF = {
+      nome: "entry.6446805",
+      empresa: "entry.1181733162",
+      cidade: "entry.411987689",
+      whats: "entry.1725602620",
+      placas: "entry.1456561747",
+      obs: "entry.1183393845"
+    };
+
+    function onlyDigits(s){ return (s||"").replace(/\D/g, ""); }
+
+    document.getElementById("leadForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+
+      const nome   = document.getElementById("nome").value.trim();
+      const empresa= document.getElementById("empresa").value.trim();
+      const cidade = document.getElementById("cidade").value.trim();
+      const whats  = document.getElementById("whats").value.trim();
+      const placas = document.getElementById("placas").value;
+      const obs    = document.getElementById("obs").value.trim();
+
+      // 1) Salvar no Google Forms (sem backend)
+      // Usa FormData para simular um envio normal de formulário
+      try {
+        const fd = new FormData();
+        fd.append(GF.nome, nome);
+        fd.append(GF.empresa, empresa);
+        fd.append(GF.cidade, cidade);
+        fd.append(GF.whats, whats);
+        fd.append(GF.placas, placas);
+        fd.append(GF.obs, obs || "-");
+
+        // IMPORTANTE:
+        // mode: "no-cors" evita erro de CORS (não dá para ler a resposta, mas envia)
+        await fetch(GOOGLE_FORM_ACTION_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: fd
+        });
+      } catch (err) {
+        // Se falhar, ainda abre o WhatsApp (não travar a conversão)
+        console.warn("Falha ao enviar para Google Forms:", err);
+      }
+
+      // 2) Abrir WhatsApp (como já estava)
+      const msg =
+    `Olá! Quero rodar um piloto do RuaLead.
+
+    Nome: ${nome}
+    Imobiliária: ${empresa}
+    Cidade/UF: ${cidade}
+    Meu WhatsApp: ${whats}
+    Qtde de placas: ${placas}
+    Obs: ${obs || "-"}
+
+    Pode me explicar como funciona e enviar a proposta do piloto de 30 dias?`;
+
+      const wa = (RUALEAD_WA_NUMBER || "").replace(/\D/g, "");
+      const url = `https://wa.me/${wa}?text=${encodeURIComponent(msg)}`;
+      window.open(url, "_blank");
+
+      // (Opcional) limpar form
+      // e.target.reset();
+    });
+
+    
+  </script>
+</body>
+</html>

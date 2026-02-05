@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard | QR Admin</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(13,110,253,.08), transparent 60%),
+                  radial-gradient(1000px 700px at 90% 20%, rgba(25,135,84,.07), transparent 55%),
+                  #f6f7fb;
+    }
+    .card { border: 0; border-radius: 16px; }
+    .btn, .form-control { border-radius: 12px; padding: 12px 14px; }
+    .code-pill {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    .truncate {
+      max-width: 420px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .table td { vertical-align: middle; }
+
+    .action-btn {
+      width: 64px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: 12px;
+    }
+    .action-btn i { font-size: 18px; }
+
+    th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+    th.sortable .sort-indicator { opacity: .45; margin-left: 6px; font-size: 12px; }
+    th.sortable.active .sort-indicator { opacity: 1; }
+    .filter-help { font-size: 12px; }
+  </style>
+</head>
+
+<body>
+  {% set ns = namespace(active=0, scans=0) %}
+  {% for r in rows %}
+    {% set st = (r['status'] if r is mapping and 'status' in r else r.status) %}
+    {% set sc = (r['scans'] if r is mapping and 'scans' in r else r.scans) %}
+    {% if st == 'active' %}
+      {% set ns.active = ns.active + 1 %}
+    {% endif %}
+    {% if sc %}
+      {% set ns.scans = ns.scans + sc %}
+    {% endif %}
+  {% endfor %}
+
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <div class="text-muted small">QR Admin</div>
+        <h1 class="h4 mb-0">Dashboard</h1>
+        <div class="text-muted small">{{ scope_label or '' }}</div>
+      </div>
+
+      <div class="d-flex gap-2">
+        {% if current_user.is_authenticated and current_user.role == 'admin' %}
+          <a class="btn btn-outline-primary" href="{{ url_for('main.admin_users') }}">
+            <i class="bi bi-people me-2"></i>Admin (Usuários)
+          </a>
+        {% endif %}
+
+        <a class="btn btn-outline-secondary" href="{{ url_for('main.logout') }}">
+          <i class="bi bi-box-arrow-right me-2"></i>Sair
+        </a>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info d-flex align-items-center" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          <div>{{ messages[0] }}</div>
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="text-muted small">Total de QRs</div>
+            <div class="fs-3 fw-semibold">{{ rows|length }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="text-muted small">Ativos</div>
+            <div class="fs-3 fw-semibold">{{ ns.active }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="text-muted small">Scans</div>
+            <div class="fs-3 fw-semibold">{{ ns.scans }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Criar novo QR -->
+      <div class="col-12 col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <i class="bi bi-plus-circle text-primary"></i>
+              <h6 class="mb-0">Criar novo QR</h6>
+            </div>
+
+            <form method="post" action="{{ url_for('main.new_qr') }}">
+              <div class="mb-3">
+                <label class="form-label">Código</label>
+                <input class="form-control" name="code" placeholder="QR-001" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Descrição (opcional)</label>
+                <input class="form-control" name="description" placeholder="Ex: Casa Rua X - 2 dorm">
+              </div>
+
+              <button class="btn btn-primary w-100" type="submit">
+                <i class="bi bi-check2-circle me-2"></i>Criar QR
+              </button>
+            </form>
+
+            <hr>
+
+            <div class="text-muted small">
+              O QR sempre aponta para <span class="code-pill">/r/&lt;codigo&gt;</span><br>
+              O destino pode ser alterado depois.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de QRs -->
+      <div class="col-12 col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+              <h6 class="mb-0">QRs cadastrados</h6>
+
+              <div class="d-flex gap-2 align-items-center">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input id="qrFilter" class="form-control" placeholder="Filtrar por código, descrição, status{% if current_user.role == 'admin' %}, usuário{% endif %}...">
+                  <button id="qrClear" class="btn btn-outline-secondary" type="button" title="Limpar">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-muted filter-help mb-2">
+              Dica: clique no título da coluna para ordenar (crescente/decrescente).
+            </div>
+
+            <div class="table-responsive">
+              <table id="qrTable" class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th class="sortable" data-col="code" data-type="text">Código <span class="sort-indicator">↕</span></th>
+                    <th class="sortable" data-col="desc" data-type="text">Descrição <span class="sort-indicator">↕</span></th>
+
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                      <th class="sortable" data-col="owner" data-type="text">Usuário <span class="sort-indicator">↕</span></th>
+                    {% endif %}
+
+                    <th class="sortable" data-col="status" data-type="text">Status <span class="sort-indicator">↕</span></th>
+                    <th class="sortable text-end" data-col="scans" data-type="number">Scans <span class="sort-indicator">↕</span></th>
+                    <th class="text-center">Ações</th>
+                    <th class="sortable" data-col="url" data-type="text">URL Atual <span class="sort-indicator">↕</span></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for r in rows %}
+                    {% set _id = (r['id'] if r is mapping and 'id' in r else r.id) %}
+                    {% set _code = (r['code'] if r is mapping and 'code' in r else r.code) %}
+                    {% set _desc = (r['description'] if r is mapping and 'description' in r else r.description) %}
+                    {% set _status = (r['status'] if r is mapping and 'status' in r else r.status) %}
+                    {% set _url = (r['current_url'] if r is mapping and 'current_url' in r else r.current_url) %}
+                    {% set _scans = (r['scans'] if r is mapping and 'scans' in r else r.scans) %}
+
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                      {% set _owner_name = (r['owner_name'] if r is mapping and 'owner_name' in r else r.owner_name) %}
+                      {% set _owner_email = (r['owner_email'] if r is mapping and 'owner_email' in r else r.owner_email) %}
+                      {% set _owner_text = (_owner_name or _owner_email or '') %}
+                    {% endif %}
+
+                    <tr
+                      data-code="{{ (_code or '')|lower }}"
+                      data-desc="{{ (_desc or '')|lower }}"
+                      {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                        data-owner="{{ (_owner_text or '')|lower }}"
+                      {% endif %}
+                      data-status="{{ (_status or '')|lower }}"
+                      data-scans="{{ _scans or 0 }}"
+                      data-url="{{ (_url or '')|lower }}"
+                    >
+                      <td><span class="badge text-bg-dark code-pill">{{ _code }}</span></td>
+                      <td>{{ _desc or '-' }}</td>
+
+                      {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                        <td>
+                          {% if _owner_name %}
+                            <div class="fw-semibold">{{ _owner_name }}</div>
+                            {% if _owner_email %}
+                              <div class="text-muted small">{{ _owner_email }}</div>
+                            {% endif %}
+                          {% elif _owner_email %}
+                            <div class="fw-semibold">{{ _owner_email }}</div>
+                          {% else %}
+                            <span class="text-muted">—</span>
+                          {% endif %}
+                        </td>
+                      {% endif %}
+
+                      <td>
+                        {% if _status == 'active' %}
+                          <span class="badge text-bg-success">Ativo</span>
+                        {% else %}
+                          <span class="badge text-bg-secondary">Inativo</span>
+                        {% endif %}
+                      </td>
+
+                      <td class="text-end fw-semibold">{{ _scans or 0 }}</td>
+
+                      <td class="text-center">
+                        <div class="d-flex justify-content-center gap-2">
+                          <a class="btn btn-outline-primary action-btn" href="{{ url_for('main.edit_qr', qr_id=_id) }}">
+                            <i class="bi bi-pencil-square"></i>
+                            <span>Editar</span>
+                          </a>
+                          <a class="btn btn-outline-secondary action-btn" href="{{ url_for('main.qr_stats', qr_id=_id) }}">
+                            <i class="bi bi-graph-up"></i>
+                            <span>Stats</span>
+                          </a>
+                          <a class="btn btn-outline-dark action-btn" href="{{ url_for('main.qr_png', code=_code) }}">
+                            <i class="bi bi-download"></i>
+                            <span>PNG</span>
+                          </a>
+                          <a class="btn btn-outline-success action-btn" href="{{ url_for('main.redirect_qr', code=_code) }}" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            <span>Testar</span>
+                          </a>
+                        </div>
+                      </td>
+
+                      <td>
+                        {% if _url %}
+                          <a href="{{ _url }}" target="_blank" class="text-decoration-none">
+                            <span class="truncate d-inline-block" title="{{ _url }}">{{ _url }}</span>
+                          </a>
+                        {% else %}
+                          <span class="text-muted">— sem destino</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="qrEmpty" class="text-muted mt-2" style="display:none;">
+              Nenhum QR encontrado com esse filtro.
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      const filterInput = document.getElementById("qrFilter");
+      const clearBtn = document.getElementById("qrClear");
+      const table = document.getElementById("qrTable");
+      const tbody = table.querySelector("tbody");
+      const empty = document.getElementById("qrEmpty");
+
+      const isAdmin = {{ 'true' if (current_user.is_authenticated and current_user.role == 'admin') else 'false' }};
+
+      function visibleRows() {
+        return Array.from(tbody.querySelectorAll("tr")).filter(tr => tr.style.display !== "none");
+      }
+
+      function applyFilter() {
+        const q = (filterInput.value || "").trim().toLowerCase();
+        let shown = 0;
+
+        Array.from(tbody.querySelectorAll("tr")).forEach(tr => {
+          const code = tr.dataset.code || "";
+          const desc = tr.dataset.desc || "";
+          const status = tr.dataset.status || "";
+
+          const owner = isAdmin ? (tr.dataset.owner || "") : "";
+
+          const match = !q || code.includes(q) || desc.includes(q) || status.includes(q) || owner.includes(q);
+          tr.style.display = match ? "" : "none";
+          if (match) shown++;
+        });
+
+        empty.style.display = (shown === 0) ? "" : "none";
+      }
+
+      function getSortValue(tr, col, type) {
+        const v = tr.dataset[col] ?? "";
+        if (type === "number") return Number(v) || 0;
+        return String(v).toLowerCase();
+      }
+
+      function sortBy(col, type, dir) {
+        const rows = visibleRows();
+        rows.sort((a, b) => {
+          const va = getSortValue(a, col, type);
+          const vb = getSortValue(b, col, type);
+
+          if (va < vb) return dir === "asc" ? -1 : 1;
+          if (va > vb) return dir === "asc" ? 1 : -1;
+          return 0;
+        });
+        rows.forEach(r => tbody.appendChild(r));
+      }
+
+      // Filter events
+      filterInput.addEventListener("input", applyFilter);
+      clearBtn.addEventListener("click", () => {
+        filterInput.value = "";
+        applyFilter();
+        filterInput.focus();
+      });
+
+      // Sorting events
+      let current = { col: null, dir: "asc" };
+
+      table.querySelectorAll("th.sortable").forEach(th => {
+        th.addEventListener("click", () => {
+          const col = th.dataset.col;
+          const type = th.dataset.type || "text";
+
+          if (current.col === col) {
+            current.dir = current.dir === "asc" ? "desc" : "asc";
+          } else {
+            current.col = col;
+            current.dir = "asc";
+          }
+
+          table.querySelectorAll("th.sortable").forEach(x => x.classList.remove("active"));
+          th.classList.add("active");
+
+          const ind = th.querySelector(".sort-indicator");
+          if (ind) ind.textContent = current.dir === "asc" ? "↑" : "↓";
+
+          table.querySelectorAll("th.sortable").forEach(x => {
+            if (x !== th) {
+              const i = x.querySelector(".sort-indicator");
+              if (i) i.textContent = "↕";
+            }
+          });
+
+          sortBy(col, type, current.dir);
+        });
+      });
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>
