@@ -54,6 +54,7 @@ def init_db():
       current_url TEXT,
       status TEXT NOT NULL DEFAULT 'active',
       description TEXT,
+      template_type TEXT NOT NULL DEFAULT 'Aluguel',
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
@@ -79,6 +80,15 @@ def init_db():
             db.commit()
         except Exception:
             # Se já existe (condição de corrida), ignora
+            pass
+
+    # Migração segura: adiciona template_type se não existir
+    if not _column_exists(db, "qr_codes", "template_type"):
+        try:
+            # Adiciona com valor padrão para registros existentes
+            db.execute("ALTER TABLE qr_codes ADD COLUMN template_type TEXT NOT NULL DEFAULT 'Aluguel'")
+            db.commit()
+        except Exception:
             pass
 
     # 3) Índice do owner_user_id (só agora, com coluna garantida)

@@ -38,6 +38,7 @@
       font-size: 12px;
     }
     .action-btn i { font-size: 18px; }
+    .action-btn.disabled { opacity: 0.6; cursor: not-allowed; }
 
     th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
     th.sortable .sort-indicator { opacity: .45; margin-left: 6px; font-size: 12px; }
@@ -118,7 +119,7 @@
 
     <div class="row g-3">
       <!-- Criar novo QR -->
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-3">
         <div class="card shadow-sm">
           <div class="card-body">
             <div class="d-flex align-items-center gap-2 mb-3">
@@ -129,12 +130,20 @@
             <form method="post" action="{{ url_for('main.new_qr') }}">
               <div class="mb-3">
                 <label class="form-label">Código</label>
-                <input class="form-control" name="code" placeholder="QR-001" required>
+                <input class="form-control" name="code" placeholder="0001 ou 1000" required>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Descrição (opcional)</label>
                 <input class="form-control" name="description" placeholder="Ex: Casa Rua X - 2 dorm">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Tipo de Placa</label>
+                <select class="form-select" name="template_type">
+                  <option value="Aluguel" selected>Aluga-se</option>
+                  <option value="Venda">Vende-se</option>
+                </select>
               </div>
 
               <button class="btn btn-primary w-100" type="submit">
@@ -153,7 +162,7 @@
       </div>
 
       <!-- Lista de QRs -->
-      <div class="col-12 col-lg-8">
+      <div class="col-12 col-lg-9">
         <div class="card shadow-sm">
           <div class="card-body">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
@@ -187,7 +196,7 @@
 
                     <th class="sortable" data-col="status" data-type="text">Status <span class="sort-indicator">↕</span></th>
                     <th class="sortable text-end" data-col="scans" data-type="number">Scans <span class="sort-indicator">↕</span></th>
-                    <th class="text-center">Ações</th>
+                    <th class="text-center" style="min-width: 420px;">Ações</th>
                     <th class="sortable" data-col="url" data-type="text">URL Atual <span class="sort-indicator">↕</span></th>
                   </tr>
                 </thead>
@@ -236,9 +245,11 @@
                       {% endif %}
 
                       <td>
-                        {% if _status == 'active' %}
+                        {% if not _url %}
+                          <span class="badge text-bg-warning">Pendente</span>
+                        {% elif _status == 'active' %}
                           <span class="badge text-bg-success">Ativo</span>
-                        {% else %}
+                        {% else %} {# _status == 'inactive' #} 
                           <span class="badge text-bg-secondary">Inativo</span>
                         {% endif %}
                       </td>
@@ -251,18 +262,43 @@
                             <i class="bi bi-pencil-square"></i>
                             <span>Editar</span>
                           </a>
-                          <a class="btn btn-outline-secondary action-btn" href="{{ url_for('main.qr_stats', qr_id=_id) }}">
-                            <i class="bi bi-graph-up"></i>
-                            <span>Stats</span>
-                          </a>
-                          <a class="btn btn-outline-dark action-btn" href="{{ url_for('main.qr_png', code=_code) }}">
-                            <i class="bi bi-download"></i>
-                            <span>PNG</span>
-                          </a>
-                          <a class="btn btn-outline-success action-btn" href="{{ url_for('main.redirect_qr', code=_code) }}" target="_blank">
-                            <i class="bi bi-box-arrow-up-right"></i>
-                            <span>Testar</span>
-                          </a>
+
+                          {% if not _url %}
+                            <a class="btn btn-outline-secondary action-btn disabled" href="#" aria-disabled="true" title="Adicione uma URL de destino para habilitar">
+                              <i class="bi bi-graph-up"></i>
+                              <span>Stats</span>
+                            </a>
+                            <a class="btn btn-outline-dark action-btn disabled" href="#" aria-disabled="true" title="Adicione uma URL de destino para habilitar">
+                              <i class="bi bi-download"></i>
+                              <span>PNG</span>
+                            </a>
+                            <a class="btn btn-outline-success action-btn disabled" href="#" aria-disabled="true" title="Adicione uma URL de destino para habilitar">
+                              <i class="bi bi-box-arrow-up-right"></i>
+                              <span>Testar</span>
+                            </a>
+                          {% else %}
+                            <a class="btn btn-outline-secondary action-btn" href="{{ url_for('main.qr_stats', qr_id=_id) }}">
+                              <i class="bi bi-graph-up"></i>
+                              <span>Stats</span>
+                            </a>
+                            <a class="btn btn-outline-dark action-btn" href="{{ url_for('main.qr_png', code=_code) }}">
+                              <i class="bi bi-download"></i>
+                              <span>PNG</span>
+                            </a>
+                            <a class="btn btn-outline-success action-btn" href="{{ url_for('main.redirect_qr', code=_code) }}" target="_blank">
+                              <i class="bi bi-box-arrow-up-right"></i>
+                              <span>Testar</span>
+                            </a>
+                          {% endif %} 
+                          
+                          <div>
+                            <form method="post" action="{{ url_for('main.delete_qr', qr_id=_id) }}" onsubmit="return confirm('Tem certeza que deseja excluir o QR Code \'{{ _code }}\'? Esta ação não pode ser desfeita.');" style="display: contents;">
+                              <button type="submit" class="btn btn-outline-danger action-btn">
+                                <i class="bi bi-trash"></i>
+                                <span>Excluir</span>
+                              </button>
+                            </form>
+                          </div>
                         </div>
                       </td>
 

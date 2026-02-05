@@ -73,16 +73,25 @@
               <div class="form-text">Use http:// ou https:// com domínio.</div>
             </div>
 
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-4">
               <label class="form-label">Descrição</label>
               <input class="form-control" name="description" placeholder="Ex: Casa Rua X - 2 dorm" value="{{ qr['description'] or '' }}">
             </div>
 
             <div class="col-12 col-md-4">
               <label class="form-label">Status</label>
-              <select class="form-select" name="status">
-                <option value="active" {% if (qr['status'] == 'active') %}selected{% endif %}>Ativo</option>
-                <option value="inactive" {% if (qr['status'] == 'inactive') %}selected{% endif %}>Inativo</option>
+              <select class="form-select" name="status" {% if not qr['current_url'] %}disabled title="Adicione uma URL de destino para alterar o status."{% endif %}>
+                <option value="Pendente" {% if not qr['current_url'] or qr['status'] == 'Pendente' %}selected{% endif %}>Pendente</option>
+                <option value="active" {% if qr['current_url'] and qr['status'] == 'active' %}selected{% endif %}>Ativo</option>
+                <option value="inactive" {% if qr['current_url'] and qr['status'] == 'inactive' %}selected{% endif %}>Inativo</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-4">
+              <label class="form-label">Tipo de Placa</label>
+              <select class="form-select" name="template_type">
+                <option value="Aluguel" {% if (qr['template_type'] == 'Aluguel') %}selected{% endif %}>Aluga-se</option>
+                <option value="Venda" {% if (qr['template_type'] == 'Venda') %}selected{% endif %}>Vende-se</option>
               </select>
             </div>
 
@@ -96,6 +105,11 @@
               <a class="btn btn-outline-dark" href="{{ url_for('main.qr_png', code=qr['code']) }}">
                 <i class="bi bi-download me-2"></i>Baixar PNG
               </a>
+              {% if qr.current_url %}
+              <a class="btn btn-outline-info" href="#" target="_blank">
+                <i class="bi bi-file-image me-2"></i>Gerar Placa
+              </a>
+              {% endif %}
             </div>
           </div>
         </form>
